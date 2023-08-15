@@ -1,9 +1,9 @@
 ---
-name: CI for Foodgram
+name: main workflow foodgram
 
 on:
   push:
-    branches: [ mastr ]
+    branches: main
 
 jobs:
   copy_files_to_server:
@@ -58,7 +58,7 @@ jobs:
       with:
         context: backend/
         push: true
-        tags: ${{ secrets.DOCKER_USER }}/foodgram_back:latest
+        tags: ${{ secrets.DOCKER_USER }}/foodgram_backend:latest
 
   build_push_frontend_to_DockerHub:
     name: Building front image and pushing it to Docker Hub
@@ -80,7 +80,7 @@ jobs:
       with:
         context: frontend/
         push: true
-        tags: ${{ secrets.DOCKER_USER }}/foodgram_front:latest
+        tags: ${{ secrets.DOCKER_USER }}/foodgram_frontend:latest
 
   deploy:
     runs-on: ubuntu-22.04
@@ -126,5 +126,4 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: ${{ PRIVATE_KEY }} успешно выполнен!
-...
+        message: фудграм успешно задеплоен!
