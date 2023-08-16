@@ -18,7 +18,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        privateKey: ${{ secrets.PRIVATE_KEY }}
+        privateKey: ${{ secrets.SSH_KEY }}
         command: cd projects && mkdir -p foodgram && mkdir -p foodgram/docs
 
     - name: Copy infra files
@@ -28,7 +28,7 @@ jobs:
           remote: /${{ secrets.USERNAME }}/projects/foodgram/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          privateKey: ${{ secrets.PRIVATE_KEY }}
+          privateKey: ${{ secrets.SSH_KEY }}
 
     - name: Copy docs
       uses: garygrossgarten/github-action-scp@release
@@ -37,7 +37,7 @@ jobs:
           remote: /${{ secrets.USERNAME }}/projects/foodgram/docs/
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          privateKey: ${{ secrets.PRIVATE_KEY }}
+          privateKey: ${{ secrets.SSH_KEY }}
 
   build_and_push_backend_to_docker_hub:
     name: Push Docker image to DockerHub
@@ -82,6 +82,7 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     needs:
+      - copy_files_to_server
       - build_and_push_backend_to_docker_hub
       - build_and_push_frontend_to_docker_hub
     steps:
@@ -90,7 +91,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        privateKey: ${{ secrets.PRIVATE_KEY }}
+        privateKey: ${{ secrets.SSH_KEY }}
         command: |
           cd foodgram-project-react
           sudo docker-compose stop
