@@ -1,16 +1,15 @@
 """Модуль содержит дополнительные классы
 для настройки основных классов приложения.
 """
+from typing import Union
 from django.db.models import Model, Q
 from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
-from rest_framework.status import (
-    HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST,
-)
+from rest_framework.status import (HTTP_201_CREATED,
+                                   HTTP_204_NO_CONTENT,
+                                   HTTP_400_BAD_REQUEST)
 
 
 class AddDelViewMixin:
@@ -28,10 +27,10 @@ class AddDelViewMixin:
             link_model = M2M_Model
     """
 
-    add_serializer: ModelSerializer | None = None
-    link_model: Model | None = None
+    add_serializer: Union[ModelSerializer, None] = None
+    link_model: Union[Model, None] = None
 
-    def _create_relation(self, obj_id: int | str) -> Response:
+    def _create_relation(self, obj_id):
         """Добавляет связь M2M между объектами.
 
         Args:

@@ -1,18 +1,4 @@
-from api.mixins import AddDelViewMixin
-from api.paginators import PageLimitPagination
-from api.permissions import (
-    AdminOrReadOnly,
-    AuthorStaffOrReadOnly,
-    DjangoModelPermissions,
-    IsAuthenticated,
-)
-from api.serializers import (
-    IngredientSerializer,
-    RecipeSerializer,
-    ShortRecipeSerializer,
-    TagSerializer,
-    UserSubscribeSerializer,
-)
+from typing import Union
 from core.enums import Tuples, UrlQueries
 from core.services import create_shoping_list, maybe_incorrect_layout
 from django.contrib.auth import get_user_model
@@ -27,6 +13,14 @@ from rest_framework.routers import APIRootView
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from users.models import Subscriptions
+
+from api.mixins import AddDelViewMixin
+from api.paginators import PageLimitPagination
+from api.permissions import (AdminOrReadOnly, AuthorStaffOrReadOnly,
+                             DjangoModelPermissions, IsAuthenticated)
+from api.serializers import (IngredientSerializer, RecipeSerializer,
+                             ShortRecipeSerializer, TagSerializer,
+                             UserSubscribeSerializer)
 
 User = get_user_model()
 
@@ -50,7 +44,7 @@ class UserViewSet(DjoserUserViewSet, AddDelViewMixin):
     link_model = Subscriptions
 
     @action(detail=True, permission_classes=(IsAuthenticated,))
-    def subscribe(self, request: WSGIRequest, id: int | str) -> Response:
+    def subscribe(self, request: WSGIRequest, id: Union[int, str]) -> Response:
         """Создаёт/удалет связь между пользователями.
 
         Вызов метода через url: */user/<int:id>/subscribe/.
@@ -67,13 +61,13 @@ class UserViewSet(DjoserUserViewSet, AddDelViewMixin):
 
     @subscribe.mapping.post
     def create_subscribe(
-        self, request: WSGIRequest, id: int | str
+        self, request: WSGIRequest, id: Union[int, str]
     ) -> Response:
         return self._create_relation(id)
 
     @subscribe.mapping.delete
     def delete_subscribe(
-        self, request: WSGIRequest, id: int | str
+        self, request: WSGIRequest, id: Union[int, str]
     ) -> Response:
         return self._delete_relation(Q(author__id=id))
 
@@ -201,7 +195,7 @@ class RecipeViewSet(ModelViewSet, AddDelViewMixin):
         return queryset
 
     @action(detail=True, permission_classes=(IsAuthenticated,))
-    def favorite(self, request: WSGIRequest, pk: int | str) -> Response:
+    def favorite(self, request: WSGIRequest, pk: Union[int, str]) -> Response:
         """Добавляет/удалет рецепт в `избранное`.
 
         Вызов метода через url: */recipe/<int:pk>/favorite/.
@@ -217,20 +211,21 @@ class RecipeViewSet(ModelViewSet, AddDelViewMixin):
 
     @favorite.mapping.post
     def recipe_to_favorites(
-        self, request: WSGIRequest, pk: int | str
+        self, request: WSGIRequest, pk: Union[int, str]
     ) -> Response:
         self.link_model = Favorites
         return self._create_relation(pk)
 
     @favorite.mapping.delete
     def remove_recipe_from_favorites(
-        self, request: WSGIRequest, pk: int | str
+        self, request: WSGIRequest, pk: Union[int, str]
     ) -> Response:
         self.link_model = Favorites
         return self._delete_relation(Q(recipe__id=pk))
 
     @action(detail=True, permission_classes=(IsAuthenticated,))
-    def shopping_cart(self, request: WSGIRequest, pk: int | str) -> Response:
+    def shopping_cart(self, request: WSGIRequest, pk: Union[int, str]
+                      ) -> Response:
         """Добавляет/удалет рецепт в `список покупок`.
 
         Вызов метода через url: */recipe/<int:pk>/shopping_cart/.
@@ -245,13 +240,14 @@ class RecipeViewSet(ModelViewSet, AddDelViewMixin):
         """
 
     @shopping_cart.mapping.post
-    def recipe_to_cart(self, request: WSGIRequest, pk: int | str) -> Response:
+    def recipe_to_cart(self, request: WSGIRequest, pk: Union[int, str]
+                       ) -> Response:
         self.link_model = Carts
         return self._create_relation(pk)
 
     @shopping_cart.mapping.delete
     def remove_recipe_from_cart(
-        self, request: WSGIRequest, pk: int | str
+        self, request: WSGIRequest, pk: Union[int, str]
     ) -> Response:
         self.link_model = Carts
         return self._delete_relation(Q(recipe__id=pk))

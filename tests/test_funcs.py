@@ -1,5 +1,7 @@
 import pytest
-from backend.core.validators import OneOfTwoValidator, MinLenValidator, hex_color_validator
+from backend.core.validators import (OneOfTwoValidator,
+                                     MinLenValidator,
+                                     hex_color_validator)
 from django.core.exceptions import ValidationError
 
 correct_words = ('Алёша', 'Artur')
@@ -36,6 +38,7 @@ def test_color_correct():
     assert hex_color_validator('123') == '#112233'
     assert hex_color_validator('aBc') == '#AABBCC'
     assert hex_color_validator('0a2B3c') == '#0A2B3C'
+
 
 ######################################################################
 invalid_colors = ('1', '12', '1234', '1234567', 'a', '12g', '12a12af')
