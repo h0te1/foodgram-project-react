@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   frontend:
-    container_name: foodgram-front
+    container_name: foodgram_frontend
     image: h0te1/foodgram_frontend:latest
     build: ../frontend
     volumes:
@@ -19,7 +19,7 @@ services:
       - ../.env
 
   backend:
-    container_name: foodgram-app
+    container_name: foodgram_backend
     image: h0te1/foodgram_backend:latest
     build: ../backend
     restart: always
@@ -30,7 +30,7 @@ services:
       - ../.env
 
   nginx:
-    container_name: foodgram-proxy
+    container_name: foodgram_gateway
     image: nginx:1.23.3-alpine
     restart: always
     ports:
