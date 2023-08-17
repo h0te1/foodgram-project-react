@@ -1,4 +1,12 @@
 from typing import Union
+
+from api.mixins import AddDelViewMixin
+from api.paginators import PageLimitPagination
+from api.permissions import (AdminOrReadOnly, AuthorStaffOrReadOnly,
+                             DjangoModelPermissions, IsAuthenticated)
+from api.serializers import (IngredientSerializer, RecipeSerializer,
+                             ShortRecipeSerializer, TagSerializer,
+                             UserSubscribeSerializer)
 from core.enums import Tuples, UrlQueries
 from core.services import create_shoping_list, maybe_incorrect_layout
 from django.contrib.auth import get_user_model
@@ -13,14 +21,6 @@ from rest_framework.routers import APIRootView
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from users.models import Subscriptions
-
-from api.mixins import AddDelViewMixin
-from api.paginators import PageLimitPagination
-from api.permissions import (AdminOrReadOnly, AuthorStaffOrReadOnly,
-                             DjangoModelPermissions, IsAuthenticated)
-from api.serializers import (IngredientSerializer, RecipeSerializer,
-                             ShortRecipeSerializer, TagSerializer,
-                             UserSubscribeSerializer)
 
 User = get_user_model()
 

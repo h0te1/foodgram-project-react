@@ -1,9 +1,8 @@
 """Модуль валидаторов.
 """
-from typing import Union
 from re import compile
 from string import hexdigits
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
