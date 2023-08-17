@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY", default="string_from_.env")
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
+ALLOWED_HOSTS = ['84.252.143.175', '127.0.0.1', 'localhost', 'foodgraminc.myftp.biz']
 
 CSRF_TRUSTED_ORIGINS = config(
     "CSRF_TRUSTED_ORIGINS",
