@@ -13,7 +13,7 @@ jobs:
       postgres:
         image: postgres:13.10
         env:
-          POSTGRES_DB: foodgram-db
+          POSTGRES_DB: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
@@ -96,8 +96,8 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        source: "infra/docker-compose.yml"
-        target: "foodgram-project-react"
+        source: "docker-compose.yml"
+        target: "foodgram"
     - name: Executing remote ssh commands to deploy
       uses: appleboy/ssh-action@master
       with:
@@ -106,7 +106,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd foodgram-project-react/infra
+          cd foodgram
           sudo docker compose -f docker-compose.yml pull
           sudo docker compose -f docker-compose.yml down
           sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
