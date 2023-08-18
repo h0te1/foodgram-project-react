@@ -191,7 +191,7 @@ def ingredients_validator(
     if not valid_ings:
         raise ValidationError("Неправильные ингидиенты")
 
-    db_ings = Ingredient.objects.filter(pk__in=valid_ings.keys())
+    db_ings = Ingredient.objects.filter(pk__in=valid_ings)
     if not db_ings:
         raise ValidationError("Неправильные ингидиенты")
 

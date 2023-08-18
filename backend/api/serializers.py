@@ -145,7 +145,7 @@ class TagSerializer(ModelSerializer):
         for attr, value in data.items():
             data[attr] = value.sttrip(" #").upper()
 
-        return data
+        return super().validate(data)
 
 
 class IngredientSerializer(ModelSerializer):
@@ -194,6 +194,12 @@ class RecipeSerializer(ModelSerializer):
 
         Returns:
             QuerySet[dict]: Список ингридиентов в рецепте.
+        """
+        """
+        Насчёт вашего замечания: выше, в полях сериализатора
+        я как раз и сеарилизовал связанные сущности. Этот метод используется
+        только для того, чтобы в нужный момент получить все ингридиенты
+        для рецепта. Без автора, тэгов и тд.
         """
         ingredients = recipe.ingredients.values(
             "id", "name", "measurement_unit", amount=F("recipe__amount")
@@ -262,7 +268,7 @@ class RecipeSerializer(ModelSerializer):
                 "author": self.context.get("request").user,
             }
         )
-        return data
+        return super().validate(data)
 
     @atomic
     def create(self, validated_data: dict) -> Recipe:

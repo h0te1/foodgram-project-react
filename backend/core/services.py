@@ -66,28 +66,6 @@ def create_shoping_list(user: "MyUser") -> str:
         for ing in ingredients
     )
     shopping_list.extend(ing_list)
-
-    # ###########   Пример с использованием сырого SQL   ############ #
-    # ingredients = Ingredient.objects.raw('''                        #
-    # SELECT                                                          #
-    #     ing.id,                                                     #
-    #     ing.name AS name,                                           #
-    #     ing.measurement_unit AS measurement,                        #
-    #     SUM(ai.amount) AS amount                                    #
-    # FROM recipes_ingredient AS ing                                  #
-    # JOIN recipes_amountingredient AS ai ON ai.ingredients_id=ing.id #
-    # JOIN recipes_recipe AS rcp ON ai.recipe_id=rcp.id               #
-    # JOIN recipes_carts AS crt ON crt.recipe_id=rcp.id               #
-    # WHERE crt.user_id=%s                                            #
-    # GROUP BY ing.id, ing.name;                                      #
-    # ''', (user.id,))                                                #
-    #                                                                 #
-    # for ing in ingredients:                                         #
-    #     shopping_list.append(                                       #
-    #         f'{ing.name}: {ing.amount} {ing.measurement}'           #
-    #     )                                                           #
-    ###################################################################
-
     shopping_list.append("\nПосчитано в Foodgram")
     return "\n".join(shopping_list)
 

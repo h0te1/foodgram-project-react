@@ -268,7 +268,10 @@ class RecipeViewSet(ModelViewSet, AddDelViewMixin):
         """
         user = self.request.user
         if not user.carts.exists():
-            return Response(status=HTTP_400_BAD_REQUEST)
+            return Response(status=HTTP_400_BAD_REQUEST,
+                            detail={
+                                "errors": "нечего добавлять в список покупок"
+                                })
 
         filename = f"{user.username}_shopping_list.txt"
         shopping_list = create_shoping_list(user)
