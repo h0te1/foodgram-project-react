@@ -182,18 +182,18 @@ def ingredients_validator(
 
     for ing in ingredients:
         if not (isinstance(ing["amount"], int) or ing["amount"].isdigit()):
-            raise ValidationError("Неправильное количество ингидиента")
+            raise ValidationError("Неправильное количество ингридиента")
 
         valid_ings[ing["id"]] = int(ing["amount"])
         if valid_ings[ing["id"]] <= 0:
             raise ValidationError("Неправильное количество ингридиента")
 
     if not valid_ings:
-        raise ValidationError("Неправильные ингидиенты")
+        raise ValidationError("Неправильные ингридиенты")
 
     db_ings = Ingredient.objects.filter(pk__in=valid_ings)
     if not db_ings:
-        raise ValidationError("Неправильные ингидиенты")
+        raise ValidationError("Неправильные ингридиенты")
 
     for ing in db_ings:
         valid_ings[ing.pk] = (ing, valid_ings[ing.pk])
