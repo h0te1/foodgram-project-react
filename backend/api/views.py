@@ -271,7 +271,7 @@ class RecipeViewSet(ModelViewSet, AddDelViewMixin):
             return Response(status=HTTP_400_BAD_REQUEST,
                             detail={
                                 "errors": "нечего добавлять в список покупок"
-                                })
+                            })
 
         filename = f"{user.username}_shopping_list.txt"
         shopping_list = create_shoping_list(user)
